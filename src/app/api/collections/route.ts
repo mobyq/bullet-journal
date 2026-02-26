@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/db'
+import { prisma, ensureDbInitialized } from '@/lib/db'
 
 export async function GET() {
+  await ensureDbInitialized()
   try {
     const collections = await prisma.collection.findMany({
       orderBy: { order: 'asc' },
@@ -9,12 +10,13 @@ export async function GET() {
     })
     return NextResponse.json(collections)
   } catch (error) {
-    console.error('Error fetching collections:', error)
+    console.error('Error:', error)
     return NextResponse.json([])
   }
 }
 
 export async function POST(request: NextRequest) {
+  await ensureDbInitialized()
   try {
     const body = await request.json()
     const { name, icon, color, description } = body
@@ -25,7 +27,7 @@ export async function POST(request: NextRequest) {
     })
     return NextResponse.json(collection)
   } catch (error) {
-    console.error('Error creating collection:', error)
-    return NextResponse.json({ error: 'Failed to create collection' }, { status: 500 })
+    console.error('Error:', error)
+    return NextResponse.json({ error: 'Failed' }, { status: 500 })
   }
 }

@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/db'
+import { prisma, ensureDbInitialized } from '@/lib/db'
 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  await ensureDbInitialized()
   const { id } = await params
   const body = await request.json()
   const { content, type, status, date, collectionId } = body
@@ -20,6 +21,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 }
 
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  await ensureDbInitialized()
   const { id } = await params
   await prisma.bulletEntry.delete({ where: { id } })
   return NextResponse.json({ success: true })

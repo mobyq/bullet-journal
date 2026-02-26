@@ -6,10 +6,14 @@ export const prisma = globalForPrisma.prisma ?? new PrismaClient()
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
-// 初始化数据库
-async function initDb() {
+let dbInitialized = false
+
+export async function ensureDbInitialized() {
+  if (dbInitialized) return
+  
   try {
     await prisma.collection.findFirst()
+    dbInitialized = true
   } catch (error: any) {
     if (error.code === 'P2021') {
       console.log('Creating database tables...')
@@ -40,11 +44,13 @@ async function initDb() {
         CREATE INDEX IF NOT EXISTS "BulletEntry_collectionId_idx" ON BulletEntry("collectionId");
         CREATE INDEX IF NOT EXISTS "BulletEntry_date_idx" ON BulletEntry(date);
       `)
-      console.log('Database tables created')
+      console.log('Database tables created successfully')
+      dbInitialized = true
     }
   }
 }
 
-initDb()
+// 在模块加载时初始化
+ensureDbInitialized()
 
 export default prisma
