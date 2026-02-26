@@ -2,12 +2,12 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# 复制 package 文件
-COPY package.json ./
+# 复制所有 package 文件
+COPY package.json package-lock.json* ./
 COPY prisma ./prisma/
 
-# 安装所有依赖（包括 devDependencies）
-RUN npm install
+# 安装所有依赖
+RUN npm install --legacy-peer-deps
 
 # 复制所有文件
 COPY . .
@@ -32,9 +32,6 @@ COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
-
-# 创建数据目录
-RUN mkdir -p /tmp
 
 EXPOSE 3000
 
