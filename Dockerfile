@@ -18,4 +18,5 @@ ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 ENV DATABASE_URL="file:/tmp/bullet-journal.db"
 
-CMD ["npm", "start"]
+# 使用 standalone 模式的正确启动命令
+CMD ["node", ".next/standalone/server.js"]
