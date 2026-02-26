@@ -1,30 +1,40 @@
-@import "tailwindcss";
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --background: #faf8f5;
-  --foreground: #2d2a26;
-  --card: #fffdf9;
+  --bg: #faf8f5;
+  --fg: #2d2a26;
   --primary: #8b7355;
-  --primary-foreground: #fffdf9;
-  --secondary: #f5f0e8;
-  --muted: #f5f0e8;
-  --muted-foreground: #7a756d;
+  --muted: #7a756d;
   --border: #e5ddd2;
+  --card: #fffdf9;
 }
 
 body {
   font-family: Georgia, 'Times New Roman', serif;
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.5;
 }
 
-.paper-texture {
+.paper {
   background-image: linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
   background-size: 100% 28px;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+.btn {
+  padding: 0.5rem 1rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
 }
-.animate-fade-in { animation: fadeIn 0.2s ease-out; }
+
+.btn:hover { opacity: 0.9; }
+
+.input {
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--card);
+}
